@@ -1,1 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Game</title>
+    <style>
+        html, body {
+            --transitionTime: 1s;
+            width: 100%;
+            height: 100%;
+            transition: all var(--transitionTime);
+            
+        }
+        button {
+            background-color: #04AA6D;
+            border-radius: 5px;
+            font-size: 17px;
+            padding: 6px 18px;
+        }
+        .game-container {
+            text-align: center;
+            transition: all var(--transitionTime);
+        }
+        .math-container {
+            justify-content: center;
+            display: flex;
+            transition: all var(--transitionTime);
+        }
+        .answer-container {
+            
+        }
+        .answer-option-container {
+            display: flex;
+            margin-top: 10px;
+            justify-content: center;
+            transition: all var(--transitionTime);
+        }
+        .tile {
+            width: 98px;
+            height: 98px;
+            line-height: 107.5px;
+            background: grey;
+            text-align: center;
+            color: white;
+            font-size: 50px;
+            margin-right: 10px;
+            box-sizing: border-box;
+            transition: all var(--transitionTime);
+        }
+        .correct {
+            /* box-sizing: border-box; */
+            /* outline: 2px solid goldenrod; */
+            background: goldenrod;
+            border-radius: 50%;
+            outline: 2px solid black;
+            transition: all var(--transitionTime);
 
+        }
+        .false {
+            color: red;
+            transition: all var(--transitionTime);
+            text-decoration: line-through;
+        }
+        .answer-option-hover:hover {
+            background: lightgrey;
+            cursor: pointer;
+            transition: all var(--transitionTime);
+        }
+        .operator-container {
+            
+        }
+        .number-container {
+            /* 72274789 */
+        }
+
+    </style>
+</head>
+<div>
+    <div class="game-container">
+        <button name="start" type="button" onClick="init()">Start</button>
+        <h1>Math Game</h1>
+        <h2>Score: <span class="score">0000</span></h2>
+        <h2>Level: <span class="level">1</span></h2>
+        <!-- <select name="name" class="input-container">
+            <option class="tile"></option>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+        </select> -->
+        <div class="math-container">
+            <div class="number-container tile"></div>
+            <div class="operator-container tile">+</div>
+            <div class="number-container tile"></div>
+            <div class="equal-container tile">=</div>
+            <div class="answer-container tile">???</div>
+        </div>
+        <div class="answer-option-container">
+            <div class="answer-option-hover answer-option tile"></div>
+            <div class="answer-option-hover answer-option tile "></div>
+            <div class="answer-option-hover answer-option tile "></div>
+            <div class="answer-option-hover answer-option tile "></div>
+            <div class="answer-option-hover answer-option tile "></div>
+        </div>
+    </div>
+</div>
+    <script>
+        let answerOptions = document.querySelectorAll(".answer-option");
+        let numbers = [];
+        let answer = [];
+        let myScore = 0;
+        let myLevel = 0;
+        let numberOfAnswers = 5;
+        let falseAnswers = [];
+        let minInput = 0;
+        let maxInput = 2.5;
+        //make different levels
+       function checkLevel(){ //level one
+        if(myScore >= 5){
+            myLevel = 1;
+            minInput = 0;
+            maxInput = 2.5;
+        }
+        //level two
+        if(myScore >= 10){
+            myLevel = 2;
+            minInput = 0;
+            maxInput = 5;}
+        //level three
+        if(myScore >= 15){
+            myLevel = 3;
+            minInput = 15;
+            maxInput = 10;
+            
+        }
+        //level four
+        if(myScore >= 20){
+            myLevel = 4;
+            minInput = 0;
+            maxInput = 25;
+
+        }
+        //level five
+        if(myScore >= 25){
+            myLevel = 5;
+            minInput = 0;
+            maxInput = 50;
+        }}
+        //1. make a random number between 0 and 9 randomNumber(min, max);
+                function randomNumber(min, max) {
+                    const myNumber = Math.floor(Math.random() * ((max + 1) - min)) + min;
+                    console.log(myNumber);
+                    return myNumber;
+                }
+        //add answer check event listener to answer option tiles
+        //2. check to see if number clicked on was the answer
+                //add event listeners to option tiles
+               function addListener(){
+                   answerOptions.forEach(x => x.addEventListener('click', checkAnswer));
+               }
+                function addE(e){
+                      e.target.addEventListener('click', checkAnswer);
+                }
+                function removeE(e){
+                   
+                      e.target.removeEventListener('click', checkAnswer);
+
+               }
+        //when answer is selected remove event listener
+        //render board
+        //create problem
+        //create answers
+        //place problem on board
+        //place answers on board
+        //
+        //
+        //
+        
+        
+        
+        
+
+//TO DO
+//3. Check that there are no duplicate answers in the answer options
+//4. Clear the board and make another round
+
+//5. keep track of correct rounds
+//6. clear track if incorrect 
+// document.querySelectorAll('.answer-container')[0].innerHTML = 'none';
+   
+       function checkAnswer(e){
+           let selectedAnswer = parseInt(e.target.innerHTML); //force to be a number
+            console.log(selectedAnswer);
+            console.log(typeof parseInt(selectedAnswer));
+            console.log(answer[0]);
+            removeE(e);
+            if(selectedAnswer === answer[0]) {
+//3.5 When correct add one to the score
+                // alert('Correct!');
+                //add id to element
+                e.target.classList.add('correct');
+                e.target.classList.remove('answer-option-hover');
+                myScore++;
+                document.querySelectorAll('.score')[0].innerHTML = myScore;
+                document.querySelectorAll('.level')[0].innerHTML = myLevel;
+                setTimeout(init, 1000);
+                // init();
+                
+            } else {
+                // alert('FALSE!!!!')
+                e.target.classList.add('false');
+                e.target.classList.remove('answer-option-hover');
+                
+            }
+        }
+        // make two random numbers and add them together
+        function clearStyling(){
+            document.querySelectorAll('.answer-option').forEach(el => {
+                el.classList.add('answer-option-hover');
+                el.classList.remove('false');
+                el.classList.remove('correct');
+            })
+        }
+        function makeProblem(){
+            answer = [];
+            numbers = [];
+            console.log(answer);
+            document.querySelectorAll('.number-container').forEach( item => {
+                let number = randomNumber(minInput, maxInput);
+                console.log("this is number ", number);
+                item.innerHTML = number;
+                console.log(number);
+                numbers.push(number);
+                console.log(number);
+            })
+            console.log(numbers);
+            answer.push(numbers[0] + numbers[1]);
+            console.log(answer);
+            // document.getElementsByClassName('answer-container')[0].innerHTML = answer[0];
+        }
+        //make random numbers for the options
+        function makeOptions(){
+            //make numbers and put into an array falseAnswers
+            
+            makeProblem();
+            falseAnswers = [];
+            for (let i = 0; i < numberOfAnswers; i++) {             
+                let firstNumber = randomNumber(minInput, maxInput);
+                let secondNumber = randomNumber(minInput, maxInput);
+                let falseAnswer = firstNumber + secondNumber;
+                //below while loop checks to make sure there are not duplicate options
+                while(falseAnswer === answer[0]||falseAnswers.includes(falseAnswer)){
+                    firstNumber = randomNumber(minInput, maxInput);
+                    secondNumber = randomNumber(minInput, maxInput);
+                    falseAnswer = firstNumber + secondNumber;
+                }
+                falseAnswers.push(falseAnswer);
+            }
+            placeCorrectAnswer(falseAnswers, answer);
+            answerOptions.forEach((el, index) => {
+                el.innerHTML = falseAnswers[index];
+                //add click listener
+                el.addEventListener('click', checkAnswer);
+            })
+        }
+            //then take the real answer and put it into the array at a random spot
+            // console.log(falseAnswers);
+            //then go over the array and put those answers into the answer squares
+            //     document.querySelectorAll('.answer-option').forEach(item => {
+                //         //make random number
+                //         //is that random number the same as the answer?
+                //         // if so remake it
+                //         if(falseAnswer === answer[0])
+                //         //is that random number already used?
+                
+                //         {
+                    //             firstNumber = randomNumber(minInput, maxInput);
+                    //             secondNumber = randomNumber(minInput, maxInput);
+                    //             falseAnswer = firstNumber + secondNumber;
+                    //             falseAnswers.push(falseAnswer);
+                    //             // item.innerHTML = falseAnswer;
+                    //         } else {
+                        //             if(falseAnswers.includes(falseAnswer)){
+                            //                 firstNumber = randomNumber(minInput, maxInput);
+                            //                 secondNumber = randomNumber(minInput, maxInput);
+                            //                 falseAnswer = firstNumber + secondNumber;
+                            //                 falseAnswers.push(falseAnswer);
+                            //             }
+                            //             item.innerHTML = falseAnswer;
+                            //         }
+        //         item.innerHTML = firstNumber + secondNumber;
+        //     })
+        // }
+        //choose a random slot and put in the correct answer
+        function placeCorrectAnswer(incorrectAnswers, correctAnswer){
+            incorrectAnswers.splice(randomNumber(0, 4), 1, correctAnswer[0]);
+            return incorrectAnswers;
+        }
+        
+
+        function init(){
+            // makeProblem();
+            checkLevel();
+            clearStyling();
+            makeOptions();
+            document.getElementsByName('start')[0].disabled = true;
+            // placeCorrectAnswer(falseAnswers, answer);
+            //reset answer-option styles
+        }
+        // init();
+        function clearThis(){
+            answerOptions.forEach(opt => opt.setAttribute('class', 'answer-option tile'));
+            numbers = [];
+            answer = [];
+            falseAnswers = [];
+        }
+        
+    </script>
+</body>
+</html>
