@@ -24,9 +24,16 @@
             transition: all var(--transitionTime);
         }
         .math-container {
+            /* animation: fadeOut 5s; */
+            opacity: 1;
             justify-content: center;
             display: flex;
-            transition: all var(--transitionTime);
+            transition: opacity .5s ease-in-out;
+
+        }
+        .math-container.hidden {
+            opacity: 0;
+            transition: opacity 3s ease-in-out; /* fades out for five seconds, fades back in depending on transition on .math-container */
         }
         .answer-container {
             
@@ -331,6 +338,10 @@ console.log(e.target);
                 //add id to element
                 e.target.classList.add('correct');
                 e.target.classList.remove('answer-option-hover');
+                //this removes the .hidden class so the problem area will show up again
+                document.querySelectorAll('.math-container').forEach(el => {
+                el.classList.remove('hidden');
+            })
                 myTotalScore++;
                 myLevelScore++;
                 document.querySelectorAll('.score')[0].innerHTML = myTotalScore;
@@ -380,6 +391,10 @@ console.log(e.target);
         }
         // make two random numbers and add them together
         function clearStyling(){
+            //this adds the .hidden class so the problem area will slowly fade away
+            document.querySelectorAll('.math-container').forEach(el => {
+                el.classList.add('hidden');
+            })
             document.querySelectorAll('.answer-option').forEach(el => {
                 el.classList.add('answer-option-hover');
                 el.classList.remove('false');
