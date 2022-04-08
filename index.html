@@ -112,6 +112,13 @@
             z-index: 10;
         } */
 
+        /* on mobile where there is no hover, this makes it so the color doesn't change onClick and get stuck in the 'hover' state */
+        @media (hover: none) {
+            .answer-option-hover:hover {
+                background: grey;
+            }
+
+}
     </style>
 </head>
 <div>
