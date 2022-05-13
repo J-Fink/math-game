@@ -1,7 +1,7 @@
 # math-game
 A little math game I made, to explore the use of localStorage.
 Live site here: https://j-fink.github.io/math-game/  
-##To Do
+## To Do
 - [ ] optimize for mobile
 - [ ] make different levels
 - [ ] pause game option (probably new math problem when unpaused, to avoid cheating)
