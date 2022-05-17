@@ -24,7 +24,34 @@
             font-size: 17px;
             padding: 6px 18px;
         }
+        .pause-container {
+            /* display: none; */
+            visibility: collapse;
+            opacity: 0;
+            height: 0;
+            width: 0;
+            /* transition: all 2s; */
+            transition: all 2s ease-in-out;
+
+        }
+        .unpaused {
+            visibility: hidden;
+        }
+        .paused {
+            opacity: 1;
+            transition: all 2s ease-in-out;
+            display: inline-block;
+            visibility: visible;
+            height: 100vh;
+            width: 100vw;
+            margin-top: 50vh;
+            text-align: center;
+            font-weight: bold;
+            font-size: 4.5rem;
+
+        }
         .game-container {
+            margin-top: 12vh;
             text-align: center;
             transition: all var(--transitionTime);
             padding-left: 10px;
@@ -145,8 +172,10 @@
     </style>
 </head>
 <div>
+    <div class="pause-container">Game Paused</div>
     <div class="game-container">
         <button name="start" type="button" onClick="init()">Start</button>
+        <button name="pause" type="button" onClick="pause()">Pause</button>
         <h1>Math Game</h1>
         <h2>Score: <span class="score">0000</span></h2>
         <h2>Level: <span class="level">1</span></h2>
@@ -182,80 +211,20 @@
     </div>
 </div>
     <script>
-        //check the score
-        //for each correct answer for a level fill in a block
-        //make it a different color for each level
-        //TODO LIST
-        //1. optimize for mobile
-        //2. make different levels
-        //3. make pause game
-        //4. make restart game
-        //5. implement localStorage
-        //6. implement stats (highest score, longest streak of practice days)
-        //7. other games? daily challenge (randomly change the speed that people get, not dependant on difficulty)?
-        //8. make time change as levels go up?
-        //
+        let isPaused = false;
+        let pauseContainer = document.querySelectorAll(".pause-container");
+        function pause() {
+            // alert('game is paused');
+            pauseContainer[0].classList.add("paused");
+            console.log(isPaused);
+            isPaused = !isPaused;
+            console.log(isPaused);
+        }
         function scoreProgress(score) {
             for (let i = 0; i < score%6; i++) {
-                console.log(score);
-            //     console.log(levelTiles[i]);   
-            //     console.log(score%6); 
-            //     levelTiles[i].style.backgroundColor = 'blue';
-            //     if(score > 5) {
-            //         levelTiles[i].style.backgroundColor = 'orange';
-            // }
-            //     if(score > 10) {
-            //         levelTiles[i].style.backgroundColor = 'gold';
-            // }
-                    
-                }
-            
+                console.log(score);                   
+                }    
         }
-        // dragElement(document.getElementById("mydiv"));
-// console.log(e.target);
-/*function dragElement(e) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-//   console.log(elmnt);
-console.log(e.target);
-  let elmnt = e.target;
- 
-    /* otherwise, move the DIV from anywhere inside the DIV:*/
-    // elmnt.onmousedown = dragMouseDown;
-  
-
-  /*function dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault();
-    e.target.style.transition = 'all 0s'; //remove transition from clicked element
-    e.target.style.position = 'absolute';
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-  }*/
-
-  /*function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }*/
-
-//  function closeDragElement() {
-    /* stop moving when mouse button is released:*/
-//     document.onmouseup = null;
-//     document.onmousemove = null;
-//   }
-// }
-        
         let levelTiles = document.querySelectorAll(".level-tile");
         let answerOptions = document.querySelectorAll(".answer-option");
         let numbers = [];
@@ -468,34 +437,7 @@ console.log(e.target);
                 el.addEventListener('click', checkAnswer);
             })
         }
-            //then take the real answer and put it into the array at a random spot
-            // console.log(falseAnswers);
-            //then go over the array and put those answers into the answer squares
-            //     document.querySelectorAll('.answer-option').forEach(item => {
-                //         //make random number
-                //         //is that random number the same as the answer?
-                //         // if so remake it
-                //         if(falseAnswer === answer[0])
-                //         //is that random number already used?
-                
-                //         {
-                    //             firstNumber = randomNumber(minInput, maxInput);
-                    //             secondNumber = randomNumber(minInput, maxInput);
-                    //             falseAnswer = firstNumber + secondNumber;
-                    //             falseAnswers.push(falseAnswer);
-                    //             // item.innerHTML = falseAnswer;
-                    //         } else {
-                        //             if(falseAnswers.includes(falseAnswer)){
-                            //                 firstNumber = randomNumber(minInput, maxInput);
-                            //                 secondNumber = randomNumber(minInput, maxInput);
-                            //                 falseAnswer = firstNumber + secondNumber;
-                            //                 falseAnswers.push(falseAnswer);
-                            //             }
-                            //             item.innerHTML = falseAnswer;
-                            //         }
-        //         item.innerHTML = firstNumber + secondNumber;
-        //     })
-        // }
+           
         //choose a random slot and put in the correct answer
         function placeCorrectAnswer(incorrectAnswers, correctAnswer){
             incorrectAnswers.splice(randomNumber(0, 4), 1, correctAnswer[0]);
