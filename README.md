@@ -6,6 +6,8 @@ Live site here: https://j-fink.github.io/math-game/
 - [ ] make different levels
 - [ x ] basic pause/resume buttons
 - [ x ] update pause/resume buttons so there is a new math problem when unpaused, to avoid cheating
+- [ x ] Change position of answers so you don't get the same spot twice in a row
+- [ x ] Check answer so you don't get the same problem twice in a row
 - [ ] restart/new game option
 - [ ] implement localStorage
 - [ ] implement stats (highest score, longest streak of practice days, etc.)

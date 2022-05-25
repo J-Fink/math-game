@@ -252,7 +252,7 @@
         }
         function scoreProgress(score) {
             for (let i = 0; i < score%6; i++) {
-                console.log(score);                   
+                // console.log(score);                   
                 }    
         }
         let levelTiles = document.querySelectorAll(".level-tile");
@@ -260,6 +260,7 @@
         let numbers = [];
         let answer = [];
         let prevAnswerLocation = '';
+        let prevAnswer = '';
         let myScore = 0;
         let myTotalScore = 0;
         let myLevelScore = 0;
@@ -308,7 +309,7 @@
         //1. make a random number between 0 and 9 randomNumber(min, max);
                 function randomNumber(min, max) {
                     const myNumber = Math.floor(Math.random() * ((max + 1) - min)) + min;
-                    console.log(myNumber);
+                    // console.log(myNumber);
                     return myNumber;
                 }
         //add answer check event listener to answer option tiles
@@ -352,9 +353,9 @@
    
        function checkAnswer(e){
            let selectedAnswer = parseInt(e.target.innerHTML); //force to be a number
-            console.log(selectedAnswer);
-            console.log(typeof parseInt(selectedAnswer));
-            console.log(answer[0]);
+            // console.log(selectedAnswer);
+            // console.log(typeof parseInt(selectedAnswer));
+            // console.log(answer[0]);
             removeE(e);
             // dragElement(e.target);
             if(selectedAnswer === answer[0]) {
@@ -447,18 +448,33 @@
         function makeProblem(){
             answer = [];
             numbers = [];
-            console.log(answer);
+            // console.log(answer);
             document.querySelectorAll('.number-container').forEach( item => {
                 let number = randomNumber(minInput, maxInput);
-                console.log("this is number ", number);
+                // console.log("this is number ", number);
                 item.innerHTML = number;
-                console.log(number);
+                // console.log(number);
                 numbers.push(number);
-                console.log(number);
+                // console.log(number);
             })
-            console.log(numbers);
             answer.push(numbers[0] + numbers[1]);
-            console.log(answer);
+            while(answer[0] === prevAnswer) {
+                answer = [];
+                numbers = [];
+                document.querySelectorAll('.number-container').forEach( item => {
+                    let number = randomNumber(minInput, maxInput);
+                    // console.log("this is number ", number);
+                    item.innerHTML = number;
+                    // console.log(number);
+                    numbers.push(number);
+                    // console.log(number);
+                })
+                answer.push(numbers[0] + numbers[1]);
+            }
+            // console.log(numbers);
+            // console.log(`this is prev ${prevAnswer} this is current ${answer[0]}`);
+            prevAnswer = answer[0];
+            // console.log(answer);
             // document.getElementsByClassName('answer-container')[0].innerHTML = answer[0];
         }
         //make random numbers for the options
