@@ -63,6 +63,7 @@
 
         }
         .game-container {
+            display: block;
             margin-top: 12vh;
             text-align: center;
             transition: all var(--transitionTime);
@@ -70,6 +71,17 @@
             padding-right: 10px;
             width: 100%;
             height: 100vh;
+        }
+        .game-container.hidden {
+            visibility: hidden;
+            margin-top: 12vh;
+            text-align: center;
+            /* transition: all var(--transitionTime); */
+            padding-left: 10px;
+            padding-right: 10px;
+            width: 0;
+            height: 0;
+
         }
         .math-container {
             /* animation: fadeOut 5s; */
@@ -238,13 +250,15 @@
         const answerTile = document.getElementsByClassName('answer-container')[0];
         function pause() {
             // alert('game is paused');
-            pauseContainer[0].classList.add("paused");
+            pauseContainer[0].classList.add('paused');
+            document.getElementsByClassName('game-container')[0].classList.add('hidden');
             console.log(isPaused);
             isPaused = !isPaused;
             console.log(isPaused);
         }
         function resume() {
             
+            document.getElementsByClassName('game-container')[0].classList.remove('hidden');
             pauseContainer[0].classList.add('unpaused');
             pauseContainer[0].classList.remove('paused');
             document.querySelectorAll('.math-container')[0].classList.remove('hidden');
