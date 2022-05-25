@@ -25,21 +25,25 @@
             padding: 6px 18px;
         }
         .pause-container {
-            /* display: none; */
+            transition: all 2s ease-in-out;
+            /* display: flex; */
             visibility: collapse;
             opacity: 0;
             height: 0;
             width: 0;
             /* transition: all 2s; */
-            transition: all 2s ease-in-out;
 
         }
+        .pause-content-container {
+            width: 50%;
+        }
         .unpaused {
+            transition: all 2s ease-in-out;
             visibility: hidden;
         }
         .paused {
-            opacity: 1;
             transition: all 2s ease-in-out;
+            opacity: 1;
             display: inline-block;
             visibility: visible;
             height: 100vh;
@@ -172,7 +176,12 @@
     </style>
 </head>
 <div>
-    <div class="pause-container">Game Paused</div>
+    <div class="pause-container">
+        <span class="pause-content-container">
+            <div>Game Paused</div>
+            <button name="resume" type="button" onClick="resume()">Resume</button>
+        </span>
+    </div>
     <div class="game-container">
         <button name="start" type="button" onClick="init()">Start</button>
         <button name="pause" type="button" onClick="pause()">Pause</button>
@@ -219,6 +228,11 @@
             console.log(isPaused);
             isPaused = !isPaused;
             console.log(isPaused);
+        }
+        function resume() {
+            
+            pauseContainer[0].classList.add("unpaused");
+            pauseContainer[0].classList.remove("paused");
         }
         function scoreProgress(score) {
             for (let i = 0; i < score%6; i++) {
