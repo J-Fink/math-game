@@ -259,6 +259,7 @@
         let answerOptions = document.querySelectorAll(".answer-option");
         let numbers = [];
         let answer = [];
+        let prevAnswerLocation = '';
         let myScore = 0;
         let myTotalScore = 0;
         let myLevelScore = 0;
@@ -488,7 +489,12 @@
            
         //choose a random slot and put in the correct answer
         function placeCorrectAnswer(incorrectAnswers, correctAnswer){
-            incorrectAnswers.splice(randomNumber(0, 4), 1, correctAnswer[0]);
+            let myRandomNumber = randomNumber(0, 4);
+            while(prevAnswerLocation === myRandomNumber) {
+                myRandomNumber = randomNumber(0, 4);
+            }
+            prevAnswerLocation = myRandomNumber;
+            incorrectAnswers.splice(myRandomNumber, 1, correctAnswer[0]);
             return incorrectAnswers;
         }
         
