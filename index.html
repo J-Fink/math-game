@@ -7,7 +7,8 @@
     <title>Math Game</title>
     <style>
         html, body {
-            --transitionTime: 2s;
+            --transitionTime: 1s;
+            --equationTransitionTime: 3s;
             margin: 0;
             padding: 0;
             width: 100%;
@@ -79,7 +80,8 @@
         }
         .math-container.hidden {
             opacity: 0;
-            transition: opacity 3s ease-in-out; /* fades out for five seconds, fades back in depending on transition on .math-container */
+            transition: opacity var(--equationTransitionTime) ease-in-out; 
+            /* fades out for ___ seconds, fades back in depending on transition on .math-container */
         }
         .answer-container {
             
@@ -386,7 +388,12 @@
                 if(myTotalScore > 20 && myTotalScore < 26) {
                     levelTiles[myLevelScore - 1].style.backgroundColor = 'green';
                 }
-                setTimeout(init, 800);
+                // e.target.classList.remove('correct');
+                // clearStyling();
+                // clearAnswerStyling();
+                // makeOptions();
+                setTimeout(clearAnswerStyling, 2000);
+                // setTimeout(init, 5000);
                 // e.target.classList.add('answer-option-hover');
                 // init();
                 
@@ -398,16 +405,24 @@
             }
         }
         // make two random numbers and add them together
-        function clearStyling(){
-            //this adds the .hidden class so the problem area will slowly fade away
-            document.querySelectorAll('.math-container').forEach(el => {
-                el.classList.add('hidden');
-            })
+        function clearAnswerStyling() {
             document.querySelectorAll('.answer-option').forEach(el => {
                 el.classList.add('answer-option-hover');
                 el.classList.remove('false');
                 el.classList.remove('correct');
             })
+            setTimeout(init, 0);
+        }
+        function clearStyling(){
+            //this adds the .hidden class so the problem area will slowly fade away
+            document.querySelectorAll('.math-container').forEach(el => {
+                el.classList.add('hidden');
+            })
+            // document.querySelectorAll('.answer-option').forEach(el => {
+            //     el.classList.add('answer-option-hover');
+            //     el.classList.remove('false');
+            //     el.classList.remove('correct');
+            // })
         }
         function makeProblem(){
             answer = [];
@@ -461,11 +476,13 @@
 
         function init(){
             // makeProblem();
+            clearStyling();
+            // clearAnswerStyling();
+            makeOptions();
             scoreProgress(myTotalScore);
             checkLevel();
-            clearStyling();
-            makeOptions();
             document.getElementsByName('start')[0].disabled = true;
+            // e.target.classList.remove('correct');
             // placeCorrectAnswer(falseAnswers, answer);
             //reset answer-option styles
         }
