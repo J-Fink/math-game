@@ -25,6 +25,13 @@
             font-size: 17px;
             padding: 6px 18px;
         }
+        button.hidden {
+            visibility: hidden;
+            background-color: #04AA6D;
+            border-radius: 5px;
+            font-size: 17px;
+            padding: 6px 18px;
+        }
         .pause-container {
             transition: all 2s ease-in-out;
             /* display: flex; */
@@ -190,7 +197,7 @@
     </div>
     <div class="game-container">
         <button name="start" type="button" onClick="init()">Start</button>
-        <button name="pause" type="button" onClick="pause()">Pause</button>
+        <button class="hidden" name="pause" type="button" onClick="pause()">Pause</button>
         <h1>Math Game</h1>
         <h2>Score: <span class="score">0000</span></h2>
         <h2>Level: <span class="level">1</span></h2>
@@ -238,8 +245,10 @@
         }
         function resume() {
             
-            pauseContainer[0].classList.add("unpaused");
-            pauseContainer[0].classList.remove("paused");
+            pauseContainer[0].classList.add('unpaused');
+            pauseContainer[0].classList.remove('paused');
+            document.querySelectorAll('.math-container')[0].classList.remove('hidden');
+            setTimeout(init, 2500);
         }
         function scoreProgress(score) {
             for (let i = 0; i < score%6; i++) {
@@ -486,7 +495,9 @@
 
         function init(){
             // makeProblem();
+            document.getElementsByName('pause')[0].classList.remove('hidden');
             clearStyling();
+            document.getElementsByName('start')[0].classList.add('hidden');
             // clearAnswerStyling();
             makeOptions();
             scoreProgress(myTotalScore);
