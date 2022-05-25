@@ -144,7 +144,11 @@
             border-radius: 50%;
             outline: 2px solid black;
             transition: all var(--transitionTime);
-
+        }
+        .answer-correct {
+            background: goldenrod;
+            transition: all var(--transitionTime);
+            outline: 2px solid black;
         }
         .false {
             color: red;
@@ -224,6 +228,7 @@
     <script>
         let isPaused = false;
         let pauseContainer = document.querySelectorAll(".pause-container");
+        const answerTile = document.getElementsByClassName('answer-container')[0];
         function pause() {
             // alert('game is paused');
             pauseContainer[0].classList.add("paused");
@@ -392,6 +397,9 @@
                 // clearStyling();
                 // clearAnswerStyling();
                 // makeOptions();
+                
+                answerTile.innerHTML = answer[0];
+                answerTile.classList.add('answer-correct');
                 setTimeout(clearAnswerStyling, 2000);
                 // setTimeout(init, 5000);
                 // e.target.classList.add('answer-option-hover');
@@ -406,6 +414,8 @@
         }
         // make two random numbers and add them together
         function clearAnswerStyling() {
+            answerTile.classList.remove('answer-correct');
+            answerTile.innerHTML = '???';
             document.querySelectorAll('.answer-option').forEach(el => {
                 el.classList.add('answer-option-hover');
                 el.classList.remove('false');
