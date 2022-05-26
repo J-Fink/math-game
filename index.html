@@ -210,6 +210,7 @@
     <div class="game-container">
         <button name="start" type="button" onClick="init()">Start</button>
         <button class="hidden" name="pause" type="button" onClick="pause()">Pause</button>
+        <button name="restart" type="button" class="hidden" onClick="restart()">Restart</button>
         <h1>Math Game</h1>
         <h2>Score: <span class="score">0000</span></h2>
         <h2>Level: <span class="level">1</span></h2>
@@ -248,16 +249,31 @@
         let isPaused = false;
         let pauseContainer = document.querySelectorAll(".pause-container");
         const answerTile = document.getElementsByClassName('answer-container')[0];
+        function restart() {
+            myScore = 0;
+            myTotalScore = 0;
+            myLevelScore = 0;
+            myLevel = 0;
+            levelTiles.forEach(x => x.style.backgroundColor = 'white');
+            document.querySelectorAll('.score')[0].innerHTML = 0;
+            document.querySelectorAll('.level')[0].innerHTML = 0;
+            document.getElementsByName('restart')[0].classList.add('hidden');
+            document.querySelectorAll('.math-container')[0].classList.remove('hidden');
+            // clearStyling();
+            // clearAnswerStyling();
+            setTimeout(init, 750);
+        }
         function pause() {
             // alert('game is paused');
             pauseContainer[0].classList.add('paused');
+            document.getElementsByName('restart')[0].classList.remove('hidden');
             document.getElementsByClassName('game-container')[0].classList.add('hidden');
             console.log(isPaused);
             isPaused = !isPaused;
             console.log(isPaused);
         }
         function resume() {
-            
+            document.getElementsByName('restart')[0].classList.add('hidden');
             document.getElementsByClassName('game-container')[0].classList.remove('hidden');
             pauseContainer[0].classList.add('unpaused');
             pauseContainer[0].classList.remove('paused');
@@ -532,6 +548,7 @@
         function init(){
             // makeProblem();
             document.getElementsByName('pause')[0].classList.remove('hidden');
+            document.getElementsByName('restart')[0].classList.remove('hidden');
             clearStyling();
             document.getElementsByName('start')[0].classList.add('hidden');
             // clearAnswerStyling();
