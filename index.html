@@ -245,32 +245,49 @@
         </div>
     </div>
 </div>
-    <script>
-        let isPaused = false;
-        let pauseContainer = document.querySelectorAll(".pause-container");
-        const answerTile = document.getElementsByClassName('answer-container')[0];
+<script>
+    let game = {
+        isPaused: false,
+        score: 0,
+        totalScore: 0,
+        levelScore: 0,
+        level: 0,
+        answer: [],
+        prevAnswerLocation: '',
+        prevAnswer: '',
+        numberOfAnswers: 5,
+        falseAnswers: [],
+        minInput: 0,
+        maxInput: 2.5,
+        numbers: [],
+    }
+    let pauseContainer = document.querySelectorAll(".pause-container");
+    let isPaused = false;
+    const answerTile = document.getElementsByClassName('answer-container')[0];
+    let levelTiles = document.querySelectorAll(".level-tile");
+    let answerOptions = document.querySelectorAll(".answer-option");
+    
         function restart() {
-            myScore = 0;
-            myTotalScore = 0;
-            myLevelScore = 0;
-            myLevel = 0;
+            game.score = 0;
+            game.totalScore = 0;
+            game.levelScore = 0;
+            game.level = 0;
+            game.minInput = 0;
+            game.maxInput = 2.5;
             levelTiles.forEach(x => x.style.backgroundColor = 'white');
             document.querySelectorAll('.score')[0].innerHTML = 0;
             document.querySelectorAll('.level')[0].innerHTML = 0;
             document.getElementsByName('restart')[0].classList.add('hidden');
             document.querySelectorAll('.math-container')[0].classList.remove('hidden');
-            // clearStyling();
-            // clearAnswerStyling();
             setTimeout(init, 750);
         }
         function pause() {
-            // alert('game is paused');
             pauseContainer[0].classList.add('paused');
             document.getElementsByName('restart')[0].classList.remove('hidden');
             document.getElementsByClassName('game-container')[0].classList.add('hidden');
-            console.log(isPaused);
-            isPaused = !isPaused;
-            console.log(isPaused);
+            console.log(game.isPaused);
+            game.isPaused = !game.isPaused;
+            console.log(game.isPaused);
         }
         function resume() {
             document.getElementsByName('restart')[0].classList.add('hidden');
@@ -285,56 +302,39 @@
                 // console.log(score);                   
                 }    
         }
-        let levelTiles = document.querySelectorAll(".level-tile");
-        let answerOptions = document.querySelectorAll(".answer-option");
-        let numbers = [];
-        let answer = [];
-        let prevAnswerLocation = '';
-        let prevAnswer = '';
-        let myScore = 0;
-        let myTotalScore = 0;
-        let myLevelScore = 0;
-        let myLevel = 0;
-        let numberOfAnswers = 5;
-        let falseAnswers = [];
-        let minInput = 0;
-        let maxInput = 2.5;
-        //make different levels
-        // levelTiles[0].style.backgroundColor = 'blue';
-        // levelTiles[1].style.backgroundColor = 'blue';
-        // levelTiles[2].style.backgroundColor = 'blue';
-        // levelTiles[3].style.backgroundColor = 'blue';
-        // levelTiles[4].style.backgroundColor = 'blue';
+       
+       
+       
        function checkLevel(){ //level one
-        if(myTotalScore >= 5){
-            myLevel = 1;
-            minInput = 0;
-            maxInput = 2.5;
+        if(game.totalScore >= 5){
+            game.level = 1;
+            game.minInput = 0;
+            game.maxInput = 2.5;
         }
         //level two
-        if(myTotalScore >= 10){
-            myLevel = 2;
-            minInput = 1;
-            maxInput = 5;}
+        if(game.totalScore >= 10){
+            game.level = 2;
+            game.minInput = 1;
+            game.maxInput = 5;}
         //level three
-        if(myTotalScore >= 15){
-            myLevel = 3;
-            minInput = 15;
-            maxInput = 10;
+        if(game.totalScore >= 15){
+            game.level = 3;
+            game.minInput = 15;
+            game.maxInput = 10;
             
         }
         //level four
-        if(myTotalScore >= 20){
-            myLevel = 4;
-            minInput = 1;
-            maxInput = 25;
+        if(game.totalScore >= 20){
+            game.level = 4;
+            game.minInput = 1;
+            game.maxInput = 25;
 
         }
         //level five
-        if(myTotalScore >= 25){
-            myLevel = 5;
-            minInput = 1;
-            maxInput = 50;
+        if(game.totalScore >= 25){
+            game.level = 5;
+            game.minInput = 1;
+            game.maxInput = 50;
         }}
         //1. make a random number between 0 and 9 randomNumber(min, max);
                 function randomNumber(min, max) {
@@ -388,7 +388,7 @@
             // console.log(answer[0]);
             removeE(e);
             // dragElement(e.target);
-            if(selectedAnswer === answer[0]) {
+            if(selectedAnswer === game.answer[0]) {
 //3.5 When correct add one to the score
                 // alert('Correct!');
                 //add id to element
@@ -398,48 +398,48 @@
                 document.querySelectorAll('.math-container').forEach(el => {
                 el.classList.remove('hidden');
             })
-                myTotalScore++;
-                myLevelScore++;
-                document.querySelectorAll('.score')[0].innerHTML = myTotalScore;
-                document.querySelectorAll('.level')[0].innerHTML = myLevel;
-                if(myTotalScore < 6) {
-                    levelTiles[myTotalScore - 1].style.backgroundColor = 'yellow';
+                game.totalScore++;
+                game.levelScore++;
+                document.querySelectorAll('.score')[0].innerHTML = game.totalScore;
+                document.querySelectorAll('.level')[0].innerHTML = game.level;
+                if(game.totalScore < 6) {
+                    levelTiles[game.totalScore - 1].style.backgroundColor = 'yellow';
                 }
-                if(myTotalScore === 6) {
-                    myLevelScore = 1;
+                if(game.totalScore === 6) {
+                    game.levelScore = 1;
                 }
-                if(myTotalScore === 11) {
-                    myLevelScore = 1;
+                if(game.totalScore === 11) {
+                    game.levelScore = 1;
                 }
-                if(myTotalScore === 16) {
-                    myLevelScore = 1;
+                if(game.totalScore === 16) {
+                    game.levelScore = 1;
                 }
-                if(myTotalScore === 21) {
-                    myLevelScore = 1;
+                if(game.totalScore === 21) {
+                    game.levelScore = 1;
                 }
-                if(myTotalScore === 25) {
+                if(game.totalScore === 25) {
                     // myLevelScore = 1;
                     document.querySelectorAll('.score')[0].innerHTML = 'WINNER!';
                     document.querySelectorAll('.level')[0].innerHTML = 'WINNER!';
                 }
-                if(myTotalScore > 5 && myTotalScore < 11) {
-                    levelTiles[myLevelScore - 1].style.backgroundColor = 'orange';
+                if(game.totalScore > 5 && game.totalScore < 11) {
+                    levelTiles[game.levelScore - 1].style.backgroundColor = 'orange';
                 }
-                if(myTotalScore > 10 && myTotalScore < 16) {
-                    levelTiles[myLevelScore - 1].style.backgroundColor = 'blue';
+                if(game.totalScore > 10 && game.totalScore < 16) {
+                    levelTiles[game.levelScore - 1].style.backgroundColor = 'blue';
                 }
-                if(myTotalScore > 15 && myTotalScore < 21) {
-                    levelTiles[myLevelScore - 1].style.backgroundColor = 'purple';
+                if(game.totalScore > 15 && game.totalScore < 21) {
+                    levelTiles[game.levelScore - 1].style.backgroundColor = 'purple';
                 }
-                if(myTotalScore > 20 && myTotalScore < 26) {
-                    levelTiles[myLevelScore - 1].style.backgroundColor = 'green';
+                if(game.totalScore > 20 && game.totalScore < 26) {
+                    levelTiles[game.levelScore - 1].style.backgroundColor = 'green';
                 }
                 // e.target.classList.remove('correct');
                 // clearStyling();
                 // clearAnswerStyling();
                 // makeOptions();
                 
-                answerTile.innerHTML = answer[0];
+                answerTile.innerHTML = game.answer[0];
                 answerTile.classList.add('answer-correct');
                 setTimeout(clearAnswerStyling, 2000);
                 // setTimeout(init, 5000);
@@ -476,34 +476,34 @@
             // })
         }
         function makeProblem(){
-            answer = [];
-            numbers = [];
+            game.answer = [];
+            game.numbers = [];
             // console.log(answer);
             document.querySelectorAll('.number-container').forEach( item => {
-                let number = randomNumber(minInput, maxInput);
+                let number = randomNumber(game.minInput, game.maxInput);
                 // console.log("this is number ", number);
                 item.innerHTML = number;
                 // console.log(number);
-                numbers.push(number);
+                game.numbers.push(number);
                 // console.log(number);
             })
-            answer.push(numbers[0] + numbers[1]);
-            while(answer[0] === prevAnswer) {
-                answer = [];
-                numbers = [];
+            game.answer.push(game.numbers[0] + game.numbers[1]);
+            while(game.answer[0] === game.prevAnswer) {
+                game.answer = [];
+                game.numbers = [];
                 document.querySelectorAll('.number-container').forEach( item => {
-                    let number = randomNumber(minInput, maxInput);
+                    let number = randomNumber(game.minInput, game.maxInput);
                     // console.log("this is number ", number);
                     item.innerHTML = number;
                     // console.log(number);
-                    numbers.push(number);
+                    game.numbers.push(number);
                     // console.log(number);
                 })
-                answer.push(numbers[0] + numbers[1]);
+                game.answer.push(game.numbers[0] + game.numbers[1]);
             }
             // console.log(numbers);
             // console.log(`this is prev ${prevAnswer} this is current ${answer[0]}`);
-            prevAnswer = answer[0];
+            game.prevAnswer = game.answer[0];
             // console.log(answer);
             // document.getElementsByClassName('answer-container')[0].innerHTML = answer[0];
         }
@@ -512,22 +512,22 @@
             //make numbers and put into an array falseAnswers
             
             makeProblem();
-            falseAnswers = [];
-            for (let i = 0; i < numberOfAnswers; i++) {             
-                let firstNumber = randomNumber(minInput, maxInput);
-                let secondNumber = randomNumber(minInput, maxInput);
+            game.falseAnswers = [];
+            for (let i = 0; i < game.numberOfAnswers; i++) {             
+                let firstNumber = randomNumber(game.minInput, game.maxInput);
+                let secondNumber = randomNumber(game.minInput, game.maxInput);
                 let falseAnswer = firstNumber + secondNumber;
                 //below while loop checks to make sure there are not duplicate options
-                while(falseAnswer === answer[0]||falseAnswers.includes(falseAnswer)){
-                    firstNumber = randomNumber(minInput, maxInput);
-                    secondNumber = randomNumber(minInput, maxInput);
+                while(falseAnswer === game.answer[0]||game.falseAnswers.includes(falseAnswer)){
+                    firstNumber = randomNumber(game.minInput, game.maxInput);
+                    secondNumber = randomNumber(game.minInput, game.maxInput);
                     falseAnswer = firstNumber + secondNumber;
                 }
-                falseAnswers.push(falseAnswer);
+                game.falseAnswers.push(falseAnswer);
             }
-            placeCorrectAnswer(falseAnswers, answer);
+            placeCorrectAnswer(game.falseAnswers, game.answer);
             answerOptions.forEach((el, index) => {
-                el.innerHTML = falseAnswers[index];
+                el.innerHTML = game.falseAnswers[index];
                 //add click listener
                 el.addEventListener('click', checkAnswer);
             })
@@ -536,10 +536,10 @@
         //choose a random slot and put in the correct answer
         function placeCorrectAnswer(incorrectAnswers, correctAnswer){
             let myRandomNumber = randomNumber(0, 4);
-            while(prevAnswerLocation === myRandomNumber) {
+            while(game.prevAnswerLocation === myRandomNumber) {
                 myRandomNumber = randomNumber(0, 4);
             }
-            prevAnswerLocation = myRandomNumber;
+            game.prevAnswerLocation = myRandomNumber;
             incorrectAnswers.splice(myRandomNumber, 1, correctAnswer[0]);
             return incorrectAnswers;
         }
@@ -553,7 +553,7 @@
             document.getElementsByName('start')[0].classList.add('hidden');
             // clearAnswerStyling();
             makeOptions();
-            scoreProgress(myTotalScore);
+            scoreProgress(game.totalScore);
             checkLevel();
             document.getElementsByName('start')[0].disabled = true;
             // e.target.classList.remove('correct');
@@ -563,11 +563,11 @@
         // init();
         function clearThis(){
             answerOptions.forEach(opt => opt.setAttribute('class', 'answer-option tile'));
-            numbers = [];
-            answer = [];
-            falseAnswers = [];
+            game.numbers = [];
+            game.answer = [];
+            game.falseAnswers = [];
         }
         
-    </script>
+</script>
 </body>
 </html>
