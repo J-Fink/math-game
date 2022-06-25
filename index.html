@@ -8,7 +8,7 @@
     <style>
         html, body {
             --transitionTime: 1s;
-            --equationTransitionTime: 3s;
+            --equationTransitionTime: 2.5s;
             margin: 0;
             padding: 0;
             width: 100%;
@@ -246,7 +246,7 @@
     </div>
 </div>
 <script>
-    let game = {
+    let game = JSON.parse(window.localStorage.getItem('game')) ||  {
         isPaused: false,
         score: 0,
         totalScore: 0,
@@ -260,9 +260,9 @@
         minInput: 0,
         maxInput: 2.5,
         numbers: [],
-    }
+        };
     let pauseContainer = document.querySelectorAll(".pause-container");
-    let isPaused = false;
+    // let isPaused = false;
     const answerTile = document.getElementsByClassName('answer-container')[0];
     let levelTiles = document.querySelectorAll(".level-tile");
     let answerOptions = document.querySelectorAll(".answer-option");
@@ -288,6 +288,7 @@
             console.log(game.isPaused);
             game.isPaused = !game.isPaused;
             console.log(game.isPaused);
+            save();
         }
         function resume() {
             document.getElementsByName('restart')[0].classList.add('hidden');
@@ -297,11 +298,11 @@
             document.querySelectorAll('.math-container')[0].classList.remove('hidden');
             setTimeout(init, 2500);
         }
-        function scoreProgress(score) {
-            for (let i = 0; i < score%6; i++) {
-                // console.log(score);                   
-                }    
-        }
+        // function scoreProgress(score) {
+        //     for (let i = 0; i < score%6; i++) {
+        //         // console.log(score);                   
+        //         }    
+        // }
        
        
        
@@ -335,7 +336,10 @@
             game.level = 5;
             game.minInput = 1;
             game.maxInput = 50;
-        }}
+        }
+        document.querySelectorAll('.score')[0].innerHTML = game.totalScore;
+        document.querySelectorAll('.level')[0].innerHTML = game.level;
+    }
         //1. make a random number between 0 and 9 randomNumber(min, max);
                 function randomNumber(min, max) {
                     const myNumber = Math.floor(Math.random() * ((max + 1) - min)) + min;
@@ -407,20 +411,26 @@
                 }
                 if(game.totalScore === 6) {
                     game.levelScore = 1;
+                    levelTiles.forEach(x => x.style.backgroundColor = 'white');
                 }
                 if(game.totalScore === 11) {
                     game.levelScore = 1;
+                    levelTiles.forEach(x => x.style.backgroundColor = 'white');
                 }
                 if(game.totalScore === 16) {
                     game.levelScore = 1;
+                    levelTiles.forEach(x => x.style.backgroundColor = 'white');
                 }
                 if(game.totalScore === 21) {
                     game.levelScore = 1;
+                    levelTiles.forEach(x => x.style.backgroundColor = 'white');
                 }
                 if(game.totalScore === 25) {
                     // myLevelScore = 1;
                     document.querySelectorAll('.score')[0].innerHTML = 'WINNER!';
                     document.querySelectorAll('.level')[0].innerHTML = 'WINNER!';
+                    levelTiles.forEach(x => x.style.backgroundColor = 'gold');
+                    setTimeout(restart, 2000)
                 }
                 if(game.totalScore > 5 && game.totalScore < 11) {
                     levelTiles[game.levelScore - 1].style.backgroundColor = 'orange';
@@ -506,6 +516,7 @@
             game.prevAnswer = game.answer[0];
             // console.log(answer);
             // document.getElementsByClassName('answer-container')[0].innerHTML = answer[0];
+        save();
         }
         //make random numbers for the options
         function makeOptions(){
@@ -531,6 +542,7 @@
                 //add click listener
                 el.addEventListener('click', checkAnswer);
             })
+        save();
         }
            
         //choose a random slot and put in the correct answer
@@ -541,7 +553,9 @@
             }
             game.prevAnswerLocation = myRandomNumber;
             incorrectAnswers.splice(myRandomNumber, 1, correctAnswer[0]);
+            save();
             return incorrectAnswers;
+        
         }
         
 
@@ -553,7 +567,7 @@
             document.getElementsByName('start')[0].classList.add('hidden');
             // clearAnswerStyling();
             makeOptions();
-            scoreProgress(game.totalScore);
+            // scoreProgress(game.totalScore);
             checkLevel();
             document.getElementsByName('start')[0].disabled = true;
             // e.target.classList.remove('correct');
@@ -566,8 +580,24 @@
             game.numbers = [];
             game.answer = [];
             game.falseAnswers = [];
+            save();
         }
-        
+        //make a function to add game object localStorage
+        //1. check if there is a game object in localStorage
+ 
+        //2. add game object to localStorage
+        //3. when data changes, add it to localStorage
+        function save() {
+            checkLevel();
+            console.log(window.localStorage);
+            window.localStorage.setItem('game', JSON.stringify(game));
+            console.log(window.localStorage);
+            console.log(window.localStorage.getItem('game'));
+        }
+        function update() {
+            document.querySelectorAll('.score')[0].innerHTML = game.totalScore;
+            document.querySelectorAll('.level')[0].innerHTML = game.level;
+        }
 </script>
 </body>
 </html>
