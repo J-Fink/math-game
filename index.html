@@ -248,10 +248,35 @@
 <script>
     let game = JSON.parse(window.localStorage.getItem('game')) ||  {
         isPaused: false,
-        score: 0,
         totalScore: 0,
         levelScore: 0,
-        level: 0,
+        level: 1,
+        levels: {
+                    one: {
+                        name: 'one',
+                        color: 'yellow',
+                        },
+                    two: {
+                        name: 'two',
+                        color: 'orange'
+                        },
+                    three: {
+                        name: 'three',
+                        color: 'orange'
+                        },
+                    four: {
+                        name: 'four',
+                        color: 'orange'
+                        },
+                    five: {
+                        name: 'five',
+                        color: 'orange'
+                        },
+                    five: {
+                        name: 'five',
+                        color: 'orange'
+                        },
+        },
         answer: [],
         prevAnswerLocation: '',
         prevAnswer: '',
@@ -266,47 +291,44 @@
     const answerTile = document.getElementsByClassName('answer-container')[0];
     let levelTiles = document.querySelectorAll(".level-tile");
     let answerOptions = document.querySelectorAll(".answer-option");
-    
-        function restart() {
-            game.score = 0;
-            game.totalScore = 0;
-            game.levelScore = 0;
-            game.level = 0;
-            game.minInput = 0;
-            game.maxInput = 2.5;
-            levelTiles.forEach(x => x.style.backgroundColor = 'white');
-            document.querySelectorAll('.score')[0].innerHTML = 0;
-            document.querySelectorAll('.level')[0].innerHTML = 0;
-            document.getElementsByName('restart')[0].classList.add('hidden');
-            document.querySelectorAll('.math-container')[0].classList.remove('hidden');
-            setTimeout(init, 750);
-        }
-        function pause() {
-            pauseContainer[0].classList.add('paused');
-            document.getElementsByName('restart')[0].classList.remove('hidden');
-            document.getElementsByClassName('game-container')[0].classList.add('hidden');
-            console.log(game.isPaused);
-            game.isPaused = !game.isPaused;
-            console.log(game.isPaused);
-            save();
-        }
-        function resume() {
-            document.getElementsByName('restart')[0].classList.add('hidden');
-            document.getElementsByClassName('game-container')[0].classList.remove('hidden');
-            pauseContainer[0].classList.add('unpaused');
-            pauseContainer[0].classList.remove('paused');
-            document.querySelectorAll('.math-container')[0].classList.remove('hidden');
-            setTimeout(init, 2500);
-        }
-        // function scoreProgress(score) {
-        //     for (let i = 0; i < score%6; i++) {
-        //         // console.log(score);                   
-        //         }    
-        // }
-       
-       
-       
-       function checkLevel(){ //level one
+    if(game.isPaused){
+        pause();
+    } else {
+        resume();
+    }
+    function restart() {
+        game.score = 0;
+        game.totalScore = 0;
+        game.levelScore = 0;
+        game.level = 1;
+        game.minInput = 0;
+        game.maxInput = 2.5;
+        levelTiles.forEach(x => x.style.backgroundColor = 'white');
+        document.querySelectorAll('.score')[0].innerHTML = 0;
+        document.querySelectorAll('.level')[0].innerHTML = 0;
+        document.getElementsByName('restart')[0].classList.add('hidden');
+        document.querySelectorAll('.math-container')[0].classList.remove('hidden');
+        setTimeout(init, 750);
+    }
+    function pause() {
+        pauseContainer[0].classList.add('paused');
+        document.getElementsByName('restart')[0].classList.remove('hidden');
+        document.getElementsByClassName('game-container')[0].classList.add('hidden');
+        console.log(game.isPaused);
+        console.log(game.isPaused);
+        save();
+    }
+    function resume() {
+        game.isPaused = false;
+        document.getElementsByName('restart')[0].classList.add('hidden');
+        document.getElementsByClassName('game-container')[0].classList.remove('hidden');
+        pauseContainer[0].classList.add('unpaused');
+        pauseContainer[0].classList.remove('paused');
+        document.querySelectorAll('.math-container')[0].classList.remove('hidden');
+        setTimeout(init, 2500);
+    }
+
+    function checkLevel(){ //level one
         if(game.totalScore >= 5){
             game.level = 1;
             game.minInput = 0;
@@ -339,130 +361,135 @@
         }
         document.querySelectorAll('.score')[0].innerHTML = game.totalScore;
         document.querySelectorAll('.level')[0].innerHTML = game.level;
-    }
+}
         //1. make a random number between 0 and 9 randomNumber(min, max);
-                function randomNumber(min, max) {
-                    const myNumber = Math.floor(Math.random() * ((max + 1) - min)) + min;
-                    // console.log(myNumber);
-                    return myNumber;
-                }
+    function randomNumber(min, max) {
+        const myNumber = Math.floor(Math.random() * ((max + 1) - min)) + min;
+        // console.log(myNumber);
+        return myNumber;
+    }
         //add answer check event listener to answer option tiles
         //2. check to see if number clicked on was the answer
                 //add event listeners to option tiles
-               function addListener(){
-                   answerOptions.forEach(x => x.addEventListener('click', checkAnswer));
-               }
-                
-            // answerOptions.forEach(x => x.addEventListener('mouseenter', dragElement));
-                    
-                function addE(e){
-                      e.target.addEventListener('click', checkAnswer);
-                }
-                function removeE(e){
-                   
-                      e.target.removeEventListener('click', checkAnswer);
-
-               }
+    function addListener(){
+        answerOptions.forEach(x => x.addEventListener('click', checkAnswer));
+    }
+    function addE(e){
+            e.target.addEventListener('click', checkAnswer);
+    }
+    function removeE(e){
+            e.target.removeEventListener('click', checkAnswer);
+    }
         //when answer is selected remove event listener
         //render board
         //create problem
         //create answers
         //place problem on board
         //place answers on board
-        //
-        //
-        //
+
+//on window/tab close event pause the game
+//then click resume game when reopened
+document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === 'visible') {
+        // alert('visible');
+        console.log(`it is now ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} and I'm visible`);
+        // resume();
         
+    } else {
+        console.log(`it is now ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} and I'm not visible`);
         
+        save();
+        
+    }
+})
+
         
         
 
-//TO DO
-//3. Check that there are no duplicate answers in the answer options
-//4. Clear the board and make another round
+   //function to check the answer, how often does this run?
+   //this runs everytime an answer is clicked
+    function checkAnswer(e){
+        let selectedAnswer = parseInt(e.target.innerHTML); //force to be a number
+        removeE(e);
 
-//5. keep track of correct rounds
-//6. clear track if incorrect 
-// document.querySelectorAll('.answer-container')[0].innerHTML = 'none';
-   
-       function checkAnswer(e){
-           let selectedAnswer = parseInt(e.target.innerHTML); //force to be a number
-            // console.log(selectedAnswer);
-            // console.log(typeof parseInt(selectedAnswer));
-            // console.log(answer[0]);
-            removeE(e);
-            // dragElement(e.target);
-            if(selectedAnswer === game.answer[0]) {
+        if(selectedAnswer === game.answer[0]) {
 //3.5 When correct add one to the score
-                // alert('Correct!');
-                //add id to element
-                e.target.classList.add('correct');
-                e.target.classList.remove('answer-option-hover');
-                //this removes the .hidden class so the problem area will show up again
-                document.querySelectorAll('.math-container').forEach(el => {
-                el.classList.remove('hidden');
-            })
-                game.totalScore++;
-                game.levelScore++;
-                document.querySelectorAll('.score')[0].innerHTML = game.totalScore;
-                document.querySelectorAll('.level')[0].innerHTML = game.level;
-                if(game.totalScore < 6) {
-                    levelTiles[game.totalScore - 1].style.backgroundColor = 'yellow';
+            // alert('Correct!');
+            //add id to element
+            e.target.classList.add('correct');
+            e.target.classList.remove('answer-option-hover');
+            //this removes the .hidden class so the problem area will show up again
+            document.querySelectorAll('.math-container').forEach(el => {
+            el.classList.remove('hidden');
+        })
+            game.totalScore++;
+            game.levelScore++;
+            document.querySelectorAll('.score')[0].innerHTML = game.totalScore;
+            document.querySelectorAll('.level')[0].innerHTML = game.level;
+            
+            if(game.totalScore === 6) {
+                game.levelScore = 1;
+                levelTiles.forEach(x => {
+                    x.style.backgroundColor = 'white'
                 }
-                if(game.totalScore === 6) {
-                    game.levelScore = 1;
-                    levelTiles.forEach(x => x.style.backgroundColor = 'white');
+                );
+            }
+            if(game.totalScore === 11) {
+                game.levelScore = 1;
+                levelTiles.forEach(x => x.style.backgroundColor = 'white');
+            }
+            if(game.totalScore === 16) {
+                game.levelScore = 1;
+                levelTiles.forEach(x => x.style.backgroundColor = 'white');
+            }
+            if(game.totalScore === 21) {
+                game.levelScore = 1;
+                levelTiles.forEach(x => x.style.backgroundColor = 'white');
+            }
+            if(game.totalScore === 25) {
+                // myLevelScore = 1;
+                document.querySelectorAll('.score')[0].innerHTML = 'WINNER!';
+                document.querySelectorAll('.level')[0].innerHTML = 'WINNER!';
+                levelTiles.forEach(x => x.style.backgroundColor = 'gold');
+                setTimeout(restart, 2000)
+            }
+            if(game.totalScore > 0 && game.totalScore < 6) {
+                //loop through all of the tiles up until the current score coloring them in
+                for (let i = 0; i < game.totalScore; i++) {
+                    levelTiles[i].style.backgroundColor = 'yellow';                    
                 }
-                if(game.totalScore === 11) {
-                    game.levelScore = 1;
-                    levelTiles.forEach(x => x.style.backgroundColor = 'white');
-                }
-                if(game.totalScore === 16) {
-                    game.levelScore = 1;
-                    levelTiles.forEach(x => x.style.backgroundColor = 'white');
-                }
-                if(game.totalScore === 21) {
-                    game.levelScore = 1;
-                    levelTiles.forEach(x => x.style.backgroundColor = 'white');
-                }
-                if(game.totalScore === 25) {
-                    // myLevelScore = 1;
-                    document.querySelectorAll('.score')[0].innerHTML = 'WINNER!';
-                    document.querySelectorAll('.level')[0].innerHTML = 'WINNER!';
-                    levelTiles.forEach(x => x.style.backgroundColor = 'gold');
-                    setTimeout(restart, 2000)
-                }
-                if(game.totalScore > 5 && game.totalScore < 11) {
+            }
+            if(game.totalScore > 5 && game.totalScore < 11) {
+                
+                for (let i = 0; i < game.totalScore; i++) {
                     levelTiles[game.levelScore - 1].style.backgroundColor = 'orange';
                 }
-                if(game.totalScore > 10 && game.totalScore < 16) {
+            }
+            if(game.totalScore > 10 && game.totalScore < 16) {
+                for (let i = 0; i < game.totalScore; i++) {
                     levelTiles[game.levelScore - 1].style.backgroundColor = 'blue';
                 }
-                if(game.totalScore > 15 && game.totalScore < 21) {
+            }
+            if(game.totalScore > 15 && game.totalScore < 21) {
+                for (let i = 0; i < game.totalScore; i++) {
                     levelTiles[game.levelScore - 1].style.backgroundColor = 'purple';
                 }
-                if(game.totalScore > 20 && game.totalScore < 26) {
+            }
+            if(game.totalScore > 20 && game.totalScore < 26) {
+                for (let i = 0; i < game.totalScore; i++) {
                     levelTiles[game.levelScore - 1].style.backgroundColor = 'green';
                 }
-                // e.target.classList.remove('correct');
-                // clearStyling();
-                // clearAnswerStyling();
-                // makeOptions();
-                
-                answerTile.innerHTML = game.answer[0];
-                answerTile.classList.add('answer-correct');
-                setTimeout(clearAnswerStyling, 2000);
-                // setTimeout(init, 5000);
-                // e.target.classList.add('answer-option-hover');
-                // init();
-                
-            } else {
-                // alert('FALSE!!!!')
-                e.target.classList.add('false');
-                e.target.classList.remove('answer-option-hover');
-                
-            }
+            }              
+            answerTile.innerHTML = game.answer[0];
+            answerTile.classList.add('answer-correct');
+            setTimeout(clearAnswerStyling, 2000);
+            
+        } else {
+            e.target.classList.add('false');
+            e.target.classList.remove('answer-option-hover');
+            
         }
+    }
         // make two random numbers and add them together
         function clearAnswerStyling() {
             answerTile.classList.remove('answer-correct');
@@ -479,23 +506,19 @@
             document.querySelectorAll('.math-container').forEach(el => {
                 el.classList.add('hidden');
             })
-            // document.querySelectorAll('.answer-option').forEach(el => {
-            //     el.classList.add('answer-option-hover');
-            //     el.classList.remove('false');
-            //     el.classList.remove('correct');
-            // })
         }
+
         function makeProblem(){
             game.answer = [];
             game.numbers = [];
             // console.log(answer);
             document.querySelectorAll('.number-container').forEach( item => {
                 let number = randomNumber(game.minInput, game.maxInput);
-                // console.log("this is number ", number);
+        
                 item.innerHTML = number;
-                // console.log(number);
+        
                 game.numbers.push(number);
-                // console.log(number);
+        
             })
             game.answer.push(game.numbers[0] + game.numbers[1]);
             while(game.answer[0] === game.prevAnswer) {
@@ -511,17 +534,13 @@
                 })
                 game.answer.push(game.numbers[0] + game.numbers[1]);
             }
-            // console.log(numbers);
-            // console.log(`this is prev ${prevAnswer} this is current ${answer[0]}`);
             game.prevAnswer = game.answer[0];
-            // console.log(answer);
-            // document.getElementsByClassName('answer-container')[0].innerHTML = answer[0];
         save();
         }
+
         //make random numbers for the options
         function makeOptions(){
             //make numbers and put into an array falseAnswers
-            
             makeProblem();
             game.falseAnswers = [];
             for (let i = 0; i < game.numberOfAnswers; i++) {             
@@ -558,7 +577,42 @@
         
         }
         
+//function to update level tiles
+function updateLevelTiles() {
+    
+            if(game.totalScore > 0 && game.totalScore < 6) {
+                //loop through all of the tiles up until the current score coloring them in
+                for (let i = 0; i < game.totalScore; i++) {
+                    levelTiles[i].style.backgroundColor = 'yellow';                    
+                }
+            }
+            if(game.totalScore > 5 && game.totalScore < 11) {
+                console.log(game.levelScore)
+                console.log(typeof (game.levelScore))
+                for (let i = 0; i < game.levelScore; i++) {
+                    console.log(`i is ${i}`);
+                    console.log(`totalScore is ${game.totalScore}`);
+                    console.log(`levelScore is ${game.levelScore}`);
+                    levelTiles[i].style.backgroundColor = 'orange';
+                }
+            }
+            if(game.totalScore > 10 && game.totalScore < 16) {
+                for (let i = 0; i < game.levelScore; i++) {
+                    levelTiles[i].style.backgroundColor = 'blue';
+                }
+            }
+            if(game.totalScore > 15 && game.totalScore < 21) {
+                for (let i = 0; i < game.totalScore; i++) {
+                    levelTiles[game.levelScore - 1].style.backgroundColor = 'purple';
+                }
+            }
+            if(game.totalScore > 20 && game.totalScore < 26) {
+                for (let i = 0; i < game.totalScore; i++) {
+                    levelTiles[game.levelScore - 1].style.backgroundColor = 'green';
+                }
+            }    
 
+}
         function init(){
             // makeProblem();
             document.getElementsByName('pause')[0].classList.remove('hidden');
@@ -570,6 +624,7 @@
             // scoreProgress(game.totalScore);
             checkLevel();
             document.getElementsByName('start')[0].disabled = true;
+            updateLevelTiles();
             // e.target.classList.remove('correct');
             // placeCorrectAnswer(falseAnswers, answer);
             //reset answer-option styles
@@ -582,6 +637,11 @@
             game.falseAnswers = [];
             save();
         }
+        //onload/refresh update the state of game
+        window.addEventListener('load', () => {
+            console.log('window is loaded')
+            
+        })
         //make a function to add game object localStorage
         //1. check if there is a game object in localStorage
  

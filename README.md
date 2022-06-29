@@ -13,3 +13,7 @@ Live site here: https://j-fink.github.io/math-game/
 - [ ] implement stats (highest score, longest streak of practice days, etc.)
 - [ ] other games? daily challenge ( randomly change the amount of time that people get to solve problem, not dependant on difficulty)?
 - [ ] make speed/amount of time change as levels go up?
+- [ ] clear the board and make another round
+- [ ] keep track of how many correct rounds
+- [ ] clear score if incorrect answer
+- [ ] 
