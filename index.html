@@ -19,6 +19,7 @@
         * {
             box-sizing: border-box;
         }
+        
         button {
             background-color: #04AA6D;
             border-radius: 5px;
@@ -31,6 +32,9 @@
             border-radius: 5px;
             font-size: 17px;
             padding: 6px 18px;
+        }
+        .control-container {
+            text-align: center;
         }
         .pause-container {
             transition: all 2s ease-in-out;
@@ -46,7 +50,8 @@
             width: 50%;
         }
         .unpaused {
-            transition: all 2s ease-in-out;
+            /* transition: all 2s ease-in-out; */
+            transition: none;
             visibility: hidden;
         }
         .paused {
@@ -62,25 +67,31 @@
             font-size: 4.5rem;
 
         }
+        h1 {
+            text-align: center;
+            margin-top: 12vh;
+        }
         .game-container {
             display: block;
-            margin-top: 12vh;
+            /* margin-top: 12vh; */
             text-align: center;
             transition: all var(--transitionTime);
             padding-left: 10px;
             padding-right: 10px;
             width: 100%;
             height: 100vh;
+            /* transition: none; */
         }
         .game-container.hidden {
             visibility: hidden;
-            margin-top: 12vh;
+            /* margin-top: 12vh; */
             text-align: center;
             /* transition: all var(--transitionTime); */
             padding-left: 10px;
             padding-right: 10px;
             width: 0;
             height: 0;
+            transition: none;
 
         }
         .math-container {
@@ -207,20 +218,20 @@
             <button name="resume" type="button" onClick="resume()">Resume</button>
         </span>
     </div>
-    <div class="game-container">
+    <h1>Math Game</h1>
+    <div class="control-container">
         <button name="start" type="button" onClick="init()">Start</button>
         <button class="hidden" name="pause" type="button" onClick="pause()">Pause</button>
         <button name="restart" type="button" class="hidden" onClick="restart()">Restart</button>
-        <h1>Math Game</h1>
-        <h2>Score: <span class="score">0000</span></h2>
-        <h2>Level: <span class="level">1</span></h2>
-        <!-- <select name="name" class="input-container">
-            <option class="tile"></option>
-            <div class="tile"></div>
-            <div class="tile"></div>
-            <div class="tile"></div>
-            <div class="tile"></div>
-        </select> -->
+    </div>
+    <div class="game-container">
+        <h2 class="hidden">Score: 
+            <span class="score">0000</span>
+        </h2>
+        <h2 class="hidden">Level: 
+            <span class="level">1</span>
+        </h2>
+        
         <div class="level-container">
             <div class="level-tile"></div>
             <div class="level-tile "></div>
@@ -236,7 +247,7 @@
             <div 
             class="answer-container tile">???</div>
         </div>
-        <div class="answer-option-container">
+        <div class="answer-option-container hidden">
             <div class="answer-option-hover answer-option tile"></div>
             <div class="answer-option-hover answer-option tile "></div>
             <div class="answer-option-hover answer-option tile "></div>
@@ -291,10 +302,22 @@
     const answerTile = document.getElementsByClassName('answer-container')[0];
     let levelTiles = document.querySelectorAll(".level-tile");
     let answerOptions = document.querySelectorAll(".answer-option");
+    let gameContainer = document.getElementsByClassName('game-container')[0];
+    //function to hide everything to begin with
+    hide();
+    function hide() {
+        gameContainer.classList.add('hidden');
+    }
+    //target the elements
+    //function to show everything again
+    function show() {
+        gameContainer.classList.remove('hidden');
+    
+    }
     if(game.isPaused){
-        pause();
+        // pause();
     } else {
-        resume();
+        // resume();
     }
     function restart() {
         game.score = 0;
@@ -317,45 +340,46 @@
         console.log(game.isPaused);
         console.log(game.isPaused);
         save();
+        gameContainer.addEventListener('transitionend', init);
     }
     function resume() {
         game.isPaused = false;
+        gameContainer.removeEventListener('transitionend', init);
         document.getElementsByName('restart')[0].classList.add('hidden');
         document.getElementsByClassName('game-container')[0].classList.remove('hidden');
         pauseContainer[0].classList.add('unpaused');
         pauseContainer[0].classList.remove('paused');
         document.querySelectorAll('.math-container')[0].classList.remove('hidden');
-        setTimeout(init, 2500);
     }
 
     function checkLevel(){ //level one
         if(game.totalScore >= 5){
-            game.level = 1;
+            game.level = 2;
             game.minInput = 0;
             game.maxInput = 2.5;
         }
         //level two
         if(game.totalScore >= 10){
-            game.level = 2;
+            game.level = 3;
             game.minInput = 1;
             game.maxInput = 5;}
         //level three
         if(game.totalScore >= 15){
-            game.level = 3;
+            game.level = 4;
             game.minInput = 15;
             game.maxInput = 10;
             
         }
         //level four
         if(game.totalScore >= 20){
-            game.level = 4;
+            game.level = 5;
             game.minInput = 1;
             game.maxInput = 25;
 
         }
         //level five
         if(game.totalScore >= 25){
-            game.level = 5;
+            game.level = 6;
             game.minInput = 1;
             game.maxInput = 50;
         }
@@ -397,7 +421,7 @@ document.addEventListener("visibilitychange", function() {
         
     } else {
         console.log(`it is now ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} and I'm not visible`);
-        
+        pause();
         save();
         
     }
@@ -615,6 +639,7 @@ function updateLevelTiles() {
 }
         function init(){
             // makeProblem();
+            show();
             document.getElementsByName('pause')[0].classList.remove('hidden');
             document.getElementsByName('restart')[0].classList.remove('hidden');
             clearStyling();
