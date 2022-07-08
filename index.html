@@ -56,12 +56,13 @@
         }
         .paused {
             transition: all 2s ease-in-out;
+            transition: none;
             opacity: 1;
             display: inline-block;
             visibility: visible;
-            height: 100vh;
+            /* height: 100vh; */
             width: 100vw;
-            margin-top: 50vh;
+            padding-top: 50vh;
             text-align: center;
             font-weight: bold;
             font-size: 4.5rem;
@@ -70,6 +71,11 @@
         h1 {
             text-align: center;
             margin-top: 12vh;
+        }
+        .control-container.hidden, h1.hidden {
+            visibility: hidden;
+            width: 0;
+            height: 0;
         }
         .game-container {
             display: block;
@@ -83,7 +89,8 @@
             /* transition: none; */
         }
         .game-container.hidden {
-            visibility: hidden;
+            /* visibility: hidden; */
+            display: none;
             /* margin-top: 12vh; */
             text-align: center;
             /* transition: all var(--transitionTime); */
@@ -92,8 +99,8 @@
             width: 0;
             height: 0;
             transition: none;
-
         }
+
         .math-container {
             /* animation: fadeOut 5s; */
             opacity: 1;
@@ -112,6 +119,7 @@
             opacity: 0;
             transition: opacity var(--equationTransitionTime) ease-in-out; 
             /* fades out for ___ seconds, fades back in depending on transition on .math-container */
+            height: 0;
         }
         .answer-container {
             
@@ -297,12 +305,13 @@
         maxInput: 2.5,
         numbers: [],
         };
-    let pauseContainer = document.querySelectorAll(".pause-container");
+    
     // let isPaused = false;
     const answerTile = document.getElementsByClassName('answer-container')[0];
     let levelTiles = document.querySelectorAll(".level-tile");
     let answerOptions = document.querySelectorAll(".answer-option");
     let gameContainer = document.getElementsByClassName('game-container')[0];
+    let controlContainer = document.getElementsByClassName('control-container')[0];
     //function to hide everything to begin with
     hide();
     function hide() {
@@ -334,21 +343,27 @@
         setTimeout(init, 750);
     }
     function pause() {
-        pauseContainer[0].classList.add('paused');
+        document.querySelectorAll(".pause-container")[0].classList.add('paused');
+        document.getElementsByTagName('h1')[0].classList.add('hidden');
         document.getElementsByName('restart')[0].classList.remove('hidden');
         document.getElementsByClassName('game-container')[0].classList.add('hidden');
+        document.getElementsByClassName('control-container')[0].classList.add('hidden');
         console.log(game.isPaused);
         console.log(game.isPaused);
         save();
-        gameContainer.addEventListener('transitionend', init);
+        
+        // document.getElementsByClassName('game-container')[0].addEventListener('transitionend', init);
     }
     function resume() {
+        document.querySelectorAll(".pause-container")[0].style.transition = 'all 2s ease-in-out';    
         game.isPaused = false;
-        gameContainer.removeEventListener('transitionend', init);
-        document.getElementsByName('restart')[0].classList.add('hidden');
+        // document.getElementsByName('restart')[0].classList.add('hidden');
+        // document.getElementsByClassName('game-container')[0].removeEventListener('transitionend', init);
         document.getElementsByClassName('game-container')[0].classList.remove('hidden');
-        pauseContainer[0].classList.add('unpaused');
-        pauseContainer[0].classList.remove('paused');
+        document.querySelectorAll(".pause-container")[0].classList.add('unpaused');
+        document.getElementsByTagName('h1')[0].classList.remove('hidden');
+        document.querySelectorAll(".pause-container")[0].classList.remove('paused');
+        document.getElementsByClassName('control-container')[0].classList.remove('hidden');
         document.querySelectorAll('.math-container')[0].classList.remove('hidden');
     }
 
@@ -413,14 +428,16 @@
 
 //on window/tab close event pause the game
 //then click resume game when reopened
-document.addEventListener("visibilitychange", function() {
+document.addEventListener('visibilitychange', function() {
     if (document.visibilityState === 'visible') {
-        // alert('visible');
-        console.log(`it is now ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} and I'm visible`);
         // resume();
         
-    } else {
-        console.log(`it is now ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} and I'm not visible`);
+    } 
+    
+   if (document.visibilityState === 'hidden') {
+    //this removes the transition attribute from the pause container so it will change while the window is out of focus, otherwise there is a weird issue where it won't transition until back in focus. The transition attribute is put back in the resume() function
+    document.querySelectorAll(".pause-container")[0].style.transition = 'none';    
+    console.log(`it is now ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} and I'm not visible`);
         pause();
         save();
         
