@@ -107,6 +107,7 @@
             justify-content: center;
             display: flex;
             transition: opacity .5s ease-in-out;
+            height: 100;
 
         }
         .math-container .tile:last-of-type {
@@ -119,7 +120,7 @@
             opacity: 0;
             transition: opacity var(--equationTransitionTime) ease-in-out; 
             /* fades out for ___ seconds, fades back in depending on transition on .math-container */
-            height: 0;
+            height: 100;
         }
         .answer-container {
             
@@ -355,6 +356,8 @@
         // document.getElementsByClassName('game-container')[0].addEventListener('transitionend', init);
     }
     function resume() {
+        //remove hidden class from math-container 
+        // document.querySelectorAll('.math-container')[0].classList.remove('hidden');
         document.querySelectorAll(".pause-container")[0].style.transition = 'all 2s ease-in-out';    
         game.isPaused = false;
         // document.getElementsByName('restart')[0].classList.add('hidden');
@@ -365,6 +368,9 @@
         document.querySelectorAll(".pause-container")[0].classList.remove('paused');
         document.getElementsByClassName('control-container')[0].classList.remove('hidden');
         document.querySelectorAll('.math-container')[0].classList.remove('hidden');
+        document.querySelectorAll('.pause-container')[0].ontransitionend = () => {
+            clearStyling();
+        }
     }
 
     function checkLevel(){ //level one
