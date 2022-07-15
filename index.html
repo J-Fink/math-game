@@ -36,6 +36,10 @@
         .control-container {
             text-align: center;
         }
+        .container {
+            overflow: hidden;
+            height: 100%;
+        }
         .pause-container {
             transition: all 2s ease-in-out;
             /* display: flex; */
@@ -138,6 +142,7 @@
             gap: 2px;
         }
         .level-tile {
+            box-sizing: border-box;
             border: 1px solid #8080803d;
             width: 49px;
             height: 49px;
@@ -146,7 +151,6 @@
             color: black;
             font-size: 25px;
             /* margin-right: 5px; */
-            box-sizing: border-box;
         }
         .level-one-tile {
             background: yellow;
@@ -181,13 +185,13 @@
             /* outline: 2px solid goldenrod; */
             background: goldenrod;
             border-radius: 50%;
-            outline: 2px solid black;
+            /* outline: 2px solid black; */
             transition: all var(--transitionTime);
         }
         .answer-correct {
             background: goldenrod;
             transition: all var(--transitionTime);
-            outline: 2px solid black;
+            /* outline: 2px solid black; */
         }
         .false {
             color: red;
@@ -220,7 +224,7 @@
 }
     </style>
 </head>
-<div>
+<div class="container">
     <div class="pause-container">
         <span class="pause-content-container">
             <div>Game Paused</div>
