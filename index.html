@@ -42,9 +42,42 @@
             margin-top: 15px;
             margin-left: 15px;
             position: absolute;
+            transition: 0.5s;
+            content: "x";
         }
         div.info-icon:hover {
             cursor: pointer;
+        }
+        .info-icon.hidden::before {
+            transition: 1.5s;
+            /* width: 0;
+            height: 0; */
+            /* opacity: 0; */
+            /* display: none; */
+            content: "x";
+        }
+        .info-icon::before {
+            transition: 1.5s;
+            /* width: 0;
+            height: 0; */
+            /* opacity: 0; */
+            /* display: none; */
+            content: "i";
+        }
+        .info-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            /* background: blue; */
+        }
+        .info-container.hidden {
+            display: none;
+        }
+        .info-content-container {
+            display: flex;
+            justify-content: center;
         }
         button.hidden {
             visibility: hidden;
@@ -91,6 +124,9 @@
             font-weight: bold;
             font-size: 4.5rem;
 
+        }
+        .paused p {
+            font-size: 1rem;
         }
         h1 {
             text-align: center;
@@ -244,7 +280,7 @@
 }
     </style>
 </head>
-<div class="info-icon">i</div>
+<div class="info-icon" onClick="showInfo()"></div>
 <!-- <svg height="160" width="160">
     <g fill="#4b4b4b">
         <path d="m80 15c-35.88 0-65 29.12-65 65s29.12 65 65 65 65-29.12 65-65-29.12-65-65-65zm0 10c30.36 0 55 24.64 55 55s-24.64 55-55 55-55-24.64-55-55 24.64-55 55-55z"/>
@@ -253,10 +289,21 @@
        </g>
 </svg> -->
 <div class="container">
+    <div class="info-container hidden">
+        <span class="info-content-container">
+            <div>Welcome to Math Game!
+                <p>I created this game to practice doing simple addition.</p>
+                <p>I hope you enjoy!</p>
+            </div>
+            <!-- <button name="resume" type="button" onClick="resume()">Resume</button> -->
+        </span>
+    </div>
     <div class="pause-container">
         <span class="pause-content-container">
             <div>Game Paused</div>
+            <p>Pick up where you left off or new game?</p>
             <button name="resume" type="button" onClick="resume()">Resume</button>
+            <button name="restart" type="button" class="hidden" onClick="newGame()">New Game</button>
         </span>
     </div>
     <h1>Math Game</h1>
@@ -347,6 +394,18 @@
     let controlContainer = document.getElementsByClassName('control-container')[0];
     //function to hide everything to begin with
     hide();
+    function showInfo() {
+        document.getElementsByClassName('info-container')[0].classList.remove('hidden');
+        document.getElementsByClassName('info-icon')[0].classList.add('hidden');
+        document.getElementsByClassName('info-icon')[0].addEventListener('click', hideInfo);
+        
+    }
+    function hideInfo() {
+        document.getElementsByClassName('info-container')[0].classList.add('hidden');
+        document.getElementsByClassName('info-icon')[0].classList.remove('hidden');
+        document.getElementsByClassName('info-icon')[0].removeEventListener('click', hideInfo);
+
+    }
     function hide() {
         gameContainer.classList.add('hidden');
     }
@@ -404,7 +463,14 @@
             clearStyling();
         }
     }
-
+    function newGame() {
+        resume();
+        document.querySelectorAll('.pause-container')[0].ontransitionend = ()=> {
+            restart()
+        };
+        // restart();
+        
+    }
     function checkLevel(){ //level one
         if(game.totalScore >= 5){
             game.level = 2;
