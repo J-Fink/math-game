@@ -8,7 +8,9 @@
     <style>
         html, body {
             --transitionTime: 1s;
-            --equationTransitionTime: 2.5s;
+            /* --equationTransitionTime: 2.5s; */
+            --equationTransitionTime: 0s;
+            --pauseContainerTransition: 0s;
             margin: 0;
             padding: 0;
             width: 100%;
@@ -94,7 +96,7 @@
             height: 100%;
         }
         .pause-container {
-            transition: all 2s ease-in-out;
+            transition: all var(--pauseContainerTransition) ease-in-out;
             /* display: flex; */
             visibility: collapse;
             opacity: 0;
@@ -763,7 +765,7 @@ function updateLevelTiles() {
             show();
             document.getElementsByName('pause')[0].classList.remove('hidden');
             document.getElementsByName('restart')[0].classList.remove('hidden');
-            clearStyling();
+            document.getElementsByClassName('math-container')[0].classList.remove('hidden');
             document.getElementsByName('start')[0].classList.add('hidden');
             // clearAnswerStyling();
             makeOptions();
@@ -771,6 +773,7 @@ function updateLevelTiles() {
             checkLevel();
             document.getElementsByName('start')[0].disabled = true;
             updateLevelTiles();
+            clearStyling();
             // e.target.classList.remove('correct');
             // placeCorrectAnswer(falseAnswers, answer);
             //reset answer-option styles
